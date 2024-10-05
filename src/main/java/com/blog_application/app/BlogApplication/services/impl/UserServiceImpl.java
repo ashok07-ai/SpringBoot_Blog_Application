@@ -5,6 +5,7 @@ import com.blog_application.app.BlogApplication.exceptions.ResourceNotFoundExcep
 import com.blog_application.app.BlogApplication.dto.UserDTO;
 import com.blog_application.app.BlogApplication.repositories.UserRepository;
 import com.blog_application.app.BlogApplication.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public UserDTO registerUser(UserDTO userDTO) {
@@ -67,25 +71,32 @@ public class UserServiceImpl implements UserService {
 
     // Helper method to map UserDTO to User entity
     private User mapToEntity(UserDTO userDTO) {
-        User user = new User();
-        user.setFullName(userDTO.getFullName());
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
-        user.setGender(userDTO.getGender());
-        user.setMobileNumber(userDTO.getMobileNumber());
-        return user;
+        // Using Model Mapper
+        return modelMapper.map(userDTO, User.class);
+//        User user = new User();
+//        user.setFullName(userDTO.getFullName());
+//        user.setEmail(userDTO.getEmail());
+//        user.setPassword(userDTO.getPassword());
+//        user.setGender(userDTO.getGender());
+//        user.setMobileNumber(userDTO.getMobileNumber());
+//        return  user
+
+
     }
 
     // Helper method to map User entity to UserDTO
     private UserDTO mapToDTO(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setFullName(user.getFullName());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setPassword(user.getPassword());
-        userDTO.setGender(user.getGender());
-        userDTO.setMobileNumber(user.getMobileNumber());
-        return userDTO;
+        // Using Model Mapper
+        return modelMapper.map(user, UserDTO.class);
+
+//        UserDTO userDTO = new UserDTO();
+//        userDTO.setId(user.getId());
+//        userDTO.setFullName(user.getFullName());
+//        userDTO.setEmail(user.getEmail());
+//        userDTO.setPassword(user.getPassword());
+//        userDTO.setGender(user.getGender());
+//        userDTO.setMobileNumber(user.getMobileNumber());
+//        return userDTO;
     }
 
     // Helper method to update existing user details
