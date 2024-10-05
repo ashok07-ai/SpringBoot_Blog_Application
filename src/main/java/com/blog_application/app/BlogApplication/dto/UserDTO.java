@@ -1,13 +1,30 @@
 package com.blog_application.app.BlogApplication.dto;
 
 import com.blog_application.app.BlogApplication.enums.Gender;
+import jakarta.validation.constraints.*;
 
 public class UserDTO {
     private int id;
+
+    @NotBlank(message = "Full name is required")
+    @Size(min = 3, max = 50, message = "Full name must be between 3 and 50 characters")
     private String fullName;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Please provide a valid email address")
     private  String email;
+
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters long")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$",
+            message = "Password must contain at least one uppercase letter, one number, and one special character")
     private String password;
+
+    @NotNull(message = "Gender is required")
     private Gender gender;
+
+    @NotBlank(message = "Mobile number is required")
+    @Pattern(regexp = "\\d{10}", message = "Mobile number must be 10 digits")
     private String mobileNumber;
 
 
