@@ -3,10 +3,13 @@ package com.blog_application.app.BlogApplication.entities;
 import com.blog_application.app.BlogApplication.enums.Gender;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "users")
-
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -15,7 +18,7 @@ public class User {
     private String fullName;
 
     @Column(nullable = false)
-    private  String email;
+    private String email;
 
     @Column(nullable = false)
     private String password;
@@ -27,52 +30,63 @@ public class User {
     @Column(nullable = false)
     private String mobileNumber;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Post> posts = new ArrayList<>();
+
     // Getters and Setters
-    public int getId(){
+    public int getId() {
         return id;
     }
 
-    public void setId(int _id){
-        this.id = _id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getFullName(){
+    public String getFullName() {
         return fullName;
     }
 
-    public void setFullName(String _fullName){
-        this.fullName = _fullName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String _email) {
-        this.email = _email;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String _password) {
-        this.password = _password;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Gender getGender() {
         return gender;
     }
 
-    public void setGender(Gender _gender) {
-        this.gender = _gender;
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public String getMobileNumber() {
         return mobileNumber;
     }
 
-    public void setMobileNumber(String _mobileNumber) {
-        this.mobileNumber = _mobileNumber;
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 }

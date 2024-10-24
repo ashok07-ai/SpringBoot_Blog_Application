@@ -4,8 +4,6 @@ import com.blog_application.app.BlogApplication.enums.Gender;
 import jakarta.validation.constraints.*;
 
 public class UserDTO {
-    private int id;
-
     @NotBlank(message = "Full name is required")
     @Size(min = 3, max = 50, message = "Full name must be between 3 and 50 characters")
     private String fullName;
@@ -35,14 +33,6 @@ public class UserDTO {
 
     public void setEmail(String _email) {
         this.email = _email;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int _id) {
-        this.id = _id;
     }
 
     public String getFullName() {

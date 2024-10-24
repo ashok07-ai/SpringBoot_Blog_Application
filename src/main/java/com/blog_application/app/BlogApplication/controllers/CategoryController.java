@@ -1,7 +1,6 @@
 package com.blog_application.app.BlogApplication.controllers;
 
 import com.blog_application.app.BlogApplication.dto.CategoryDTO;
-import com.blog_application.app.BlogApplication.dto.UserDTO;
 import com.blog_application.app.BlogApplication.services.CategoryService;
 import com.blog_application.app.BlogApplication.utlis.ApiResponse;
 import jakarta.validation.Valid;
