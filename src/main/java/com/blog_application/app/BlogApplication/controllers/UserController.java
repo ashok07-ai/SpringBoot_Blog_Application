@@ -1,27 +1,37 @@
 package com.blog_application.app.BlogApplication.controllers;
 
 import com.blog_application.app.BlogApplication.dto.UserDTO;
+import com.blog_application.app.BlogApplication.entities.User;
 import com.blog_application.app.BlogApplication.services.UserService;
 import com.blog_application.app.BlogApplication.utlis.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/user")
 
 public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/")
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
+    @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserDTO>> createUser(@Valid @RequestBody UserDTO userDTO) {
+        userDTO.setPassword(encoder.encode(userDTO.getPassword()));
         UserDTO createdUser = userService.registerUser(userDTO);
         return buildResponse(HttpStatus.CREATED, "User registered successfully!", createdUser);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody User user){
+        return userService.verify(user);
     }
 
     @PutMapping("/{userId}")

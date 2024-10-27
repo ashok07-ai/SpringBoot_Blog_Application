@@ -4,9 +4,13 @@ import com.blog_application.app.BlogApplication.entities.User;
 import com.blog_application.app.BlogApplication.exceptions.ResourceNotFoundException;
 import com.blog_application.app.BlogApplication.dto.UserDTO;
 import com.blog_application.app.BlogApplication.repositories.UserRepository;
+import com.blog_application.app.BlogApplication.services.JWTService;
 import com.blog_application.app.BlogApplication.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +24,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JWTService jwtService;
 
     @Override
     public UserDTO registerUser(UserDTO userDTO) {
@@ -67,6 +77,16 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 
         userRepository.delete(userDetails);
+    }
+
+    @Override
+    public String verify(User user) {
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+
+        if(authentication.isAuthenticated())
+            return jwtService.generateToken(user.getUsername());
+        return "Failed";
     }
 
     // Helper method to map UserDTO to User entity

@@ -12,6 +12,9 @@ public class UserDTO {
     @Email(message = "Please provide a valid email address")
     private  String email;
 
+    @NotBlank(message = "Username is required")
+    private  String username;
+
     @NotBlank(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters long")
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$",
@@ -67,6 +70,11 @@ public class UserDTO {
         this.mobileNumber = _mobileNumber;
     }
 
+    public String getUsername() {
+        return username;
+    }
 
-
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }
