@@ -1,6 +1,7 @@
 package com.blog_application.app.BlogApplication.services;
 
 import com.blog_application.app.BlogApplication.dto.UserDTO;
+import com.blog_application.app.BlogApplication.entities.User;
 
 import java.util.List;
 
@@ -38,4 +39,12 @@ public interface UserService {
      * @param userId The unique identifier of the user to be deleted.
      */
     void deleteUser(Integer userId);
+
+    /**
+     * Verifies the given user's credentials and generates a JWT upon successful authentication.
+     *
+     * @param user the User object containing authentication details for verification.
+     * @return a JWT as a String if the user is successfully authenticated; otherwise, returns an error message.
+     */
+    String verify(User user);
 }
