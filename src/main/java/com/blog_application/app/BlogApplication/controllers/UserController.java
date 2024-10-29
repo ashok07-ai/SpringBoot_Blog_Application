@@ -2,15 +2,19 @@ package com.blog_application.app.BlogApplication.controllers;
 
 import com.blog_application.app.BlogApplication.dto.UserDTO;
 import com.blog_application.app.BlogApplication.entities.User;
+import com.blog_application.app.BlogApplication.exceptions.InvalidCredentialsException;
 import com.blog_application.app.BlogApplication.services.UserService;
 import com.blog_application.app.BlogApplication.utlis.ApiResponse;
 import jakarta.validation.Valid;
+import org.hibernate.validator.internal.constraintvalidators.bv.number.bound.decimal.DecimalMinValidatorForLong;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.auth.login.CredentialException;
 import java.util.List;
 
 @RestController
@@ -30,8 +34,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User user){
-        return userService.verify(user);
+    public ResponseEntity<ApiResponse<String>> login(@RequestBody User user){
+        try {
+            String token = userService.verify(user);
+            return buildResponse(HttpStatus.OK, "Logged in successfully!", token);
+        } catch (UsernameNotFoundException e) {
+            return buildResponse(HttpStatus.NOT_FOUND, "Username not found!", null);
+        } catch (Exception e) {
+            return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!", null);
+        }
     }
 
     @PutMapping("/{userId}")
