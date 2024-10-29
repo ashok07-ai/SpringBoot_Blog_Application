@@ -17,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebSecurity
@@ -35,10 +36,16 @@ public class SecurityConfig {
         try{
             return http.csrf(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests(requests -> requests
-                            .requestMatchers("/api/v1/user/register", "/api/v1/user/login").permitAll()
-                            .anyRequest().authenticated())
+                            .requestMatchers(
+                                    "/api/v1/user/register",
+                                    "/api/v1/user/login",
+                                    "/v3/api-docs/**",       // For OpenAPI docs
+                                    "/swagger-ui/**",        // For Swagger UI resources
+                                    "/swagger-ui.html"       // For the Swagger UI HTML page
+                            ).permitAll()                            .anyRequest().authenticated())
 //                    .oauth2Login(Customizer.withDefaults())
-                    .httpBasic(Customizer.withDefaults())
+
+//                    .httpBasic(Customizer.withDefaults())
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                     .build();

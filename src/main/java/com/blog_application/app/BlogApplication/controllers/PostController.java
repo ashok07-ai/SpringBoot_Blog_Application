@@ -6,6 +6,7 @@ import com.blog_application.app.BlogApplication.entities.Post;
 import com.blog_application.app.BlogApplication.services.FileService;
 import com.blog_application.app.BlogApplication.services.PostService;
 import com.blog_application.app.BlogApplication.utlis.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,8 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/post")
+@Tag(name="Post Controller", description = "Post related information")
+
 public class PostController {
 
     @Autowired
