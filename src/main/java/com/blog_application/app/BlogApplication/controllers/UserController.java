@@ -2,11 +2,11 @@ package com.blog_application.app.BlogApplication.controllers;
 
 import com.blog_application.app.BlogApplication.dto.UserDTO;
 import com.blog_application.app.BlogApplication.entities.User;
-import com.blog_application.app.BlogApplication.exceptions.InvalidCredentialsException;
 import com.blog_application.app.BlogApplication.services.UserService;
 import com.blog_application.app.BlogApplication.utlis.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.hibernate.validator.internal.constraintvalidators.bv.number.bound.decimal.DecimalMinValidatorForLong;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +14,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.security.auth.login.CredentialException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
+@Tag(name="User Controller", description = "User related information")
+
 
 public class UserController {
     @Autowired
@@ -27,6 +28,7 @@ public class UserController {
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     @PostMapping("/register")
+    @Operation(summary = "Register new user")
     public ResponseEntity<ApiResponse<UserDTO>> createUser(@Valid @RequestBody UserDTO userDTO) {
         userDTO.setPassword(encoder.encode(userDTO.getPassword()));
         UserDTO createdUser = userService.registerUser(userDTO);
@@ -52,7 +54,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<ApiResponse<List<UserDTO>>> getAllUsers(){
         List<UserDTO> allUsers = userService.getAllUsers();
         return buildResponse(HttpStatus.OK, "User details fetched successfully", allUsers);
