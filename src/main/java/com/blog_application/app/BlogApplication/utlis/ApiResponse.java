@@ -1,8 +1,5 @@
 package com.blog_application.app.BlogApplication.utlis;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 public class ApiResponse<T>{
     private String message;
     private T responseObject;
